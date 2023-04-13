@@ -39,8 +39,10 @@ namespace ariel {
                 str = "King of " + type + "\n";
                 break;
             default:
-                str = this->value + " of " + type + "\n";
+                str = "" +this->value + " of " + type + "\n";
                 break;
         }
+
+        return str;
     }
 }

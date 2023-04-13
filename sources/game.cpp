@@ -196,8 +196,8 @@ namespace ariel
 
     void Game::printStats() 
     {
-        std::cout << this->player1.getname() << " stats: \n win rate: " << (this->win_p1 / this->turns) * 100 << " %% . cards won: " << this->player1.cardesTaken() << endl;
-        std::cout << this->player2.getname() << " stats: \n win rate: " << (this->win_p2 / this->turns) * 100 << " %% . cards won: " << this->player2.cardesTaken() << endl;
-        std::cout << "Draw rate: " << this->draw / this->turns * 100 << " percent  amount of draws: " << this->draw << endl;
+        std::cout << this->player1.getname() << " stats: \n win rate: " << (this->win_p1 *100) / this->turns << " %% . cards won: " << this->player1.cardesTaken() << endl;
+        std::cout << this->player2.getname() << " stats: \n win rate: " << (this->win_p2 * 100) / this->turns) << " %% . cards won: " << this->player2.cardesTaken() << endl;
+        std::cout << "Draw rate: " << (this->draw * 100) / this->turns  << " percent  amount of draws: " << this->draw << endl;
     }
 };

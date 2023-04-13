@@ -60,6 +60,7 @@ namespace ariel
         if(!this->player1.stacksize() == 0 && !this->player2.stacksize() == 0)
         {
             this->last_turn_log = "";
+            turns++; 
             int cards_to_take = 2;
 
             Card player1_card = this->player1.show_card();
@@ -75,7 +76,6 @@ namespace ariel
 
             while(c1 == c2)
             {
-                turns++; 
                 this->draw++;
                 this->last_turn_log += "Draw.";
 
@@ -101,7 +101,6 @@ namespace ariel
             }
             if(c1 == 1)
             {
-                turns++; 
                 if(c2 == 2)
                 {
                     this->last_turn_log += this->player2.getname() + " won the round!" + "\n\n";
@@ -117,7 +116,6 @@ namespace ariel
             }
             else if(c2 == 1)
             {
-                turns++; 
                 if(c1 == 2)
                 {
                     this->last_turn_log += this->player1.getname() + " won the round!" + "\n\n";
@@ -133,7 +131,6 @@ namespace ariel
             }
             else
             {
-                turns++; 
                 if(c1 > c2)
                 {
                     this->last_turn_log += this->player1.getname() + " won the round!" + "\n\n";

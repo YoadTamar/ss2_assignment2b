@@ -25,8 +25,14 @@ namespace ariel
         int i = 0;
         for (i = 1; i < 14; i++){
             this->game_cards.push_back(Card(i, "Diamonds"));
+        }
+        for (i = 1; i < 14; i++){
             this->game_cards.push_back(Card(i, "Spades"));
+        }
+        for (i = 1; i < 14; i++){
             this->game_cards.push_back(Card(i, "Hearts"));
+        }
+        for (i = 1; i < 14; i++){
             this->game_cards.push_back(Card(i, "Clubs"));
         }
 

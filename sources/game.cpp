@@ -11,11 +11,11 @@ using namespace std;
 
 namespace ariel
 {
-    Game::Game(Player& other1, Player& other2): player1(other1), player2(other2)
+    Game::Game(Player &other1, Player &other2) : player1(other1), player2(other2)
     {
-        if(other1.playing() || other2.playing())
+        if (other1.playing() || other2.playing())
             throw invalid_argument("one of the players in other game");
-        
+
         this->player1 = other1;
         this->player2 = other2;
 
@@ -31,11 +31,11 @@ namespace ariel
             this->game_cards.push_back(Card(i, "Clubs"));
         }
 
-            std::random_device random_device;
-            std::default_random_engine default_rng(random_device());
-            shuffle(this->game_cards.begin(), this->game_cards.end(), default_rng);
-    
-        for(i = 0; i<26; i++)
+        std::random_device random_device;
+        std::default_random_engine default_rng(random_device());
+        shuffle(this->game_cards.begin(), this->game_cards.end(), default_rng);
+
+        for (i = 0; i < 26; i++)
         {
             this->player1.add_card(this->game_cards.back());
             this->game_cards.pop_back();
@@ -49,150 +49,150 @@ namespace ariel
         this->draw = 0;
         this->game_log = "";
         this->last_turn_log = "";
-
     }
 
-    void Game::playTurn() 
+    void Game::playTurn()
     {
-        if(&player1 == &player2)
+        if (&player1 == &player2)
             throw invalid_argument("the playres are the same player!");
-        
-        if(!this->player1.stacksize() == 0 && !this->player2.stacksize() == 0)
-        {
-            this->last_turn_log = "";
-            turns++; 
-            int cards_to_take = 2;
 
-            Card player1_card = this->player1.show_card();
-            Card player2_card = this->player2.show_card();
-            int c1 = -1;
-            c1 = player1_card.getValue();
-            int c2 = -1;
-            c2 = player2_card.getValue();
+        else if (player1.stacksize() == 0 || player2.stacksize() == 0)
+            exit(0);
+
+        this->last_turn_log = "";
+        int cards_to_take = 2;
+
+        Card player1_card = this->player1.show_card();
+        Card player2_card = this->player2.show_card();
+        int c1 = -1;
+        c1 = player1_card.getValue();
+        int c2 = -1;
+        c2 = player2_card.getValue();
+        this->player1.remove_card();
+        this->player2.remove_card();
+
+        this->last_turn_log = this->player1.getname() + " played " + player1_card.to_string() + " " + this->player2.getname() + " played " + player2_card.to_string() + ". ";
+
+        while (c1 == c2)
+        {
+            turns++;
+            this->draw++;
+            this->last_turn_log += "Draw.";
+
+            if (this->player1.stacksize() <= 1 || this->player2.stacksize() <= 1)
+            {
+                this->player1.setTaken(cards_to_take / 2);
+                this->player2.setTaken(cards_to_take / 2);
+                break;
+            }
+
             this->player1.remove_card();
             this->player2.remove_card();
 
-            this->last_turn_log = this->player1.getname() + " played " + player1_card.to_string() + " " + this->player2.getname() + " played " + player2_card.to_string() + ". ";
+            c1 = this->player1.show_card().getValue();
+            c2 = this->player2.show_card().getValue();
+            this->player1.remove_card();
+            this->player2.remove_card();
 
-            while(c1 == c2)
+            cards_to_take += 4;
+
+            this->last_turn_log += this->player1.getname() + " played " + player1_card.to_string() + " " + this->player2.getname() + " played " + player2_card.to_string() + ". ";
+        }
+        if (c1 == 1)
+        {
+            turns++;
+            if (c2 == 2)
             {
-                this->draw++;
-                this->last_turn_log += "Draw.";
-
-                if (this->player1.stacksize() <= 1 || this->player2.stacksize() <= 1)
-                    {
-                        this->player1.setTaken(cards_to_take/2);
-                        this->player2.setTaken(cards_to_take/2);
-                        break;
-                    }
-
-                this->player1.remove_card();
-                this->player2.remove_card();
-
-                c1 = this->player1.show_card().getValue();
-                c2 = this->player2.show_card().getValue();
-                this->player1.remove_card();
-                this->player2.remove_card();
-
-                cards_to_take += 4;
-
-                this->last_turn_log += this->player1.getname() + " played " + player1_card.to_string() + " " + this->player2.getname() + " played " + player2_card.to_string() + ". ";
-
-            }
-            if(c1 == 1)
-            {
-                if(c2 == 2)
-                {
-                    this->last_turn_log += this->player2.getname() + " won the round!" + "\n\n";
-                    this->player2.setTaken(cards_to_take);
-                    this->win_p2++; 
-                }
-                else
-                {
-                    this->last_turn_log += this->player1.getname() + " won the round!" + "\n\n";
-                    this->player1.setTaken(cards_to_take);
-                    this->win_p1++;
-                }
-            }
-            else if(c2 == 1)
-            {
-                if(c1 == 2)
-                {
-                    this->last_turn_log += this->player1.getname() + " won the round!" + "\n\n";
-                    this->player1.setTaken(cards_to_take);
-                    this->win_p1++;
-                }
-                else
-                {
-                    this->last_turn_log += this->player2.getname() + " won the round!" + "\n\n";
-                    this->player2.setTaken(cards_to_take);
-                    this->win_p2++; 
-                }
+                this->last_turn_log += this->player2.getname() + " won the round!";
+                this->player2.setTaken(cards_to_take);
+                this->win_p2++;
             }
             else
             {
-                if(c1 > c2)
-                {
-                    this->last_turn_log += this->player1.getname() + " won the round!" + "\n\n";
-                    this->player1.setTaken(cards_to_take);
-                    this->win_p1++;
-                } 
-                else if(c2 > c1)
-                {
-                    this->last_turn_log += this->player2.getname() + " won the round!" + "\n\n";
-                    this->player2.setTaken(cards_to_take);
-                    this->win_p2++;
-                } 
-                else
-                {
-                    this->last_turn_log += "Draw!\n";
-                }
+                this->last_turn_log += this->player1.getname() + " won the round!";
+                this->player1.setTaken(cards_to_take);
+                this->win_p1++;
             }
+        }
+        else if (c2 == 1)
+        {
+            turns++;
+            if (c1 == 2)
+            {
+                this->last_turn_log += this->player1.getname() + " won the round!";
+                this->player1.setTaken(cards_to_take);
+                this->win_p1++;
+            }
+            else
+            {
+                this->last_turn_log += this->player2.getname() + " won the round!";
+                this->player2.setTaken(cards_to_take);
+                this->win_p2++;
+            }
+        }
+        else
+        {
+            turns++;
+            if (c1 > c2)
+            {
+                this->last_turn_log += this->player1.getname() + " won the round!";
+                this->player1.setTaken(cards_to_take);
+                this->win_p1++;
+            }
+            else if (c2 > c1)
+            {
+                this->last_turn_log += this->player2.getname() + " won the round!";
+                this->player2.setTaken(cards_to_take);
+                this->win_p2++;
+            }
+            else
+            {
+                this->last_turn_log += "Draw!";
+            }
+        }
 
-            if (this->player1.stacksize() == 0 || this->player2.stacksize() == 0)
-                {
-                    this->player1.set_active(false);
-                    this->player2.set_active(false);
-                }
+        if (this->player1.stacksize() == 0 || this->player2.stacksize() == 0)
+        {
+            this->player1.set_active(false);
+            this->player2.set_active(false);
+        }
 
-            this->game_log += this->last_turn_log; 
-            }        
-                
+        this->game_log += this->last_turn_log + "\n";
     }
 
-    void Game::printLastTurn() 
+    void Game::printLastTurn()
     {
         std::cout << this->last_turn_log << endl;
     }
 
-    void Game::printLog() 
+    void Game::printLog()
     {
         std::cout << this->game_log << endl;
     }
 
-    void Game::playAll() 
+    void Game::playAll()
     {
-        while(!this->player1.stacksize() || this->player2.stacksize())
+        while (player1.stacksize() != 0 && player2.stacksize() != 0)
             playTurn();
     }
 
-    void Game::printWiner() 
+    void Game::printWiner()
     {
-        if (!this->player1.stacksize() || this->player2.stacksize())
+        if (player1.stacksize() != 0 && player2.stacksize() != 0)
             return;
 
         if (player1.cardesTaken() == player2.cardesTaken())
             cout << "Draw!" << endl;
-        else if(player1.cardesTaken() > player2.cardesTaken())
+        else if (player1.cardesTaken() > player2.cardesTaken())
             cout << "The winner is " << player1.getname() << "!" << endl;
         else
             cout << "The winner is " << player2.getname() << "!" << endl;
     }
 
-    void Game::printStats() 
+    void Game::printStats()
     {
-        std::cout << this->player1.getname() << " stats: \n win rate: " << (this->win_p1 / this->turns) * 100 << " %% . cards won: " << this->player1.cardesTaken() << endl;
-        std::cout << this->player2.getname() << " stats: \n win rate: " << (this->win_p2 / this->turns) * 100 << " %% . cards won: " << this->player2.cardesTaken() << endl;
-        std::cout << "Draw rate: " << this->draw / this->turns * 100 << " percent  amount of draws: " << this->draw << endl;
+        std::cout << this->player1.getname() << " stats: \n win rate: " << (double)((this->win_p1 * 100) / this->turns) << " % . cards won: " << this->player1.cardesTaken() << endl;
+        std::cout << this->player2.getname() << " stats: \n win rate: " << (double)((this->win_p2 * 100) / this->turns) << " % . cards won: " << this->player2.cardesTaken() << endl;
+        std::cout << "Draw rate: " << (double)((this->draw * 100) / this->turns) << " \%  amount of draws: " << this->draw << endl;
     }
 };

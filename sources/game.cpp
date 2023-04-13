@@ -100,13 +100,13 @@ namespace ariel
             this->last_turn_log += this->player1.getname() + " played " + player1_card.to_string() + " " + this->player2.getname() + " played " + player2_card.to_string() + ". ";
 
         }
-        if(c1 > c2)
+        if(c1 > c2 || (c1 == 2 && c2 == 1))
         {
                 this->last_turn_log += this->player1.getname() + " won the round!" + "\n\n";
                 this->player1.setTaken(cards_to_take);
                 this->win_p1++;
         } 
-        else if(c2 > c1)
+        else if(c2 > c1 || (c1 == 2 && c2 == 1))
         {
                 this->last_turn_log += this->player2.getname() + " won the round!" + "\n\n";
                 this->player2.setTaken(cards_to_take);

@@ -23,16 +23,11 @@ namespace ariel
         this->player2.set_active(true);
 
         int i = 0;
-        for (i = 1; i < 14; i++){
+        for (i = 1; i < 14; i++)
+        {
             this->game_cards.push_back(Card(i, "Diamonds"));
-        }
-        for (i = 1; i < 14; i++){
             this->game_cards.push_back(Card(i, "Spades"));
-        }
-        for (i = 1; i < 14; i++){
             this->game_cards.push_back(Card(i, "Hearts"));
-        }
-        for (i = 1; i < 14; i++){
             this->game_cards.push_back(Card(i, "Clubs"));
         }
 
@@ -62,9 +57,9 @@ namespace ariel
         if(&player1 == &player2)
             throw invalid_argument("the playres are the same player!");
         
-        if(this->player1.stacksize() == 0 || this->player2.stacksize() == 0)
-            // throw invalid_argument("logic error");
-            exit(0);
+        // if(this->player1.stacksize() == 0 || this->player2.stacksize() == 0)
+        //     // throw invalid_argument("logic error");
+        //     exit(0);
         
         this->last_turn_log = "";
         turns++; 
@@ -196,8 +191,8 @@ namespace ariel
 
     void Game::printStats() 
     {
-        std::cout << this->player1.getname() << " stats: \n win rate: " << (this->win_p1 *100) / this->turns << " %% . cards won: " << this->player1.cardesTaken() << endl;
-        std::cout << this->player2.getname() << " stats: \n win rate: " << (this->win_p2 * 100) / this->turns) << " %% . cards won: " << this->player2.cardesTaken() << endl;
-        std::cout << "Draw rate: " << (this->draw * 100) / this->turns  << " percent  amount of draws: " << this->draw << endl;
+        std::cout << this->player1.getname() << " stats: \n win rate: " << (this->win_p1 / this->turns) * 100 << " %% . cards won: " << this->player1.cardesTaken() << endl;
+        std::cout << this->player2.getname() << " stats: \n win rate: " << (this->win_p2 / this->turns) * 100 << " %% . cards won: " << this->player2.cardesTaken() << endl;
+        std::cout << "Draw rate: " << this->draw / this->turns * 100 << " percent  amount of draws: " << this->draw << endl;
     }
 };

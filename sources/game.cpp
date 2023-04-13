@@ -100,21 +100,54 @@ namespace ariel
             this->last_turn_log += this->player1.getname() + " played " + player1_card.to_string() + " " + this->player2.getname() + " played " + player2_card.to_string() + ". ";
 
         }
-        if(c1 > c2 || (c1 == 2 && c2 == 1))
+        if(c1 == 1)
         {
+            if(c2 == 2)
+            {
+                this->last_turn_log += this->player2.getname() + " won the round!" + "\n\n";
+                this->player2.setTaken(cards_to_take);
+                this->win_p2++; 
+            }
+            else
+            {
                 this->last_turn_log += this->player1.getname() + " won the round!" + "\n\n";
                 this->player1.setTaken(cards_to_take);
                 this->win_p1++;
-        } 
-        else if(c2 > c1 || (c1 == 2 && c2 == 1))
+            }
+        }
+        else if(c2 == 1)
         {
+            if(c1 == 2)
+            {
+                this->last_turn_log += this->player1.getname() + " won the round!" + "\n\n";
+                this->player1.setTaken(cards_to_take);
+                this->win_p1++;
+            }
+            else
+            {
+                this->last_turn_log += this->player2.getname() + " won the round!" + "\n\n";
+                this->player2.setTaken(cards_to_take);
+                this->win_p2++; 
+            }
+        }
+        else
+        {
+            if(c1 > c2)
+            {
+                this->last_turn_log += this->player1.getname() + " won the round!" + "\n\n";
+                this->player1.setTaken(cards_to_take);
+                this->win_p1++;
+            } 
+            else if(c2 > c1)
+            {
                 this->last_turn_log += this->player2.getname() + " won the round!" + "\n\n";
                 this->player2.setTaken(cards_to_take);
                 this->win_p2++;
-        } 
-        else
-        {
-            this->last_turn_log += "Draw!\n";
+            } 
+            else
+            {
+                this->last_turn_log += "Draw!\n";
+            }
         }
 
         if (this->player1.stacksize() == 0 || this->player2.stacksize() == 0)
@@ -157,8 +190,8 @@ namespace ariel
 
     void Game::printStats() 
     {
-        std::cout << this->player1.getname() << " stats: \n win rate: " << this->win_p1 / this->turns * 100 << " %% . cards won: " << this->player1.cardesTaken() << endl;
-        std::cout << this->player2.getname() << " stats: \n win rate: " << this->win_p2 / this->turns * 100 << " %% . cards won: " << this->player2.cardesTaken() << endl;
+        std::cout << this->player1.getname() << " stats: \n win rate: " << (this->win_p1 / this->turns) * 100 << " %% . cards won: " << this->player1.cardesTaken() << endl;
+        std::cout << this->player2.getname() << " stats: \n win rate: " << (this->win_p2 / this->turns) * 100 << " %% . cards won: " << this->player2.cardesTaken() << endl;
         std::cout << "Draw rate: " << this->draw / this->turns * 100 << " percent  amount of draws: " << this->draw << endl;
     }
 };
